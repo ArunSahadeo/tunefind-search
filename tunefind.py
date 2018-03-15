@@ -126,6 +126,7 @@ def getSelectedEntry(entries):
     return selected_entry
 
 def getSeason(content):
+    selectedSeason = None
     request_content_page = requests.get(tunefind_search_uri + content['uri'], headers)
     soup = BeautifulSoup(request_content_page.text, 'html.parser')
     allSeasons = soup.find_all(class_='MainList__item___2MKl8')
@@ -136,14 +137,27 @@ def getSeason(content):
     if minEntryIndex == maxEntryIndex:
         seasonLink = tunefind_search_uri + allSeasons[0].find('a')['href']
         getSeasonPage(seasonLink)
-        #playback_link = extractMediaLink(allSeasons[0])
-        #openLink(playback_link)
         return
 
     for index, season in enumerate(allSeasons):
         season_link = season.find('a')
         print('Title: %s' % (season_link.text))
         print('Index: %d' % (int(index) + 1))
+
+    select_number = input('Please select a number from %d to %d: ' % (minEntryIndex, maxEntryIndex))
+
+    while not select_number:
+        select_number = input('Please select a number from %d to %d: ' % (minEntryIndex, maxEntryIndex))
+
+    while not int(select_number) >= minEntryIndex:
+        select_number = input('Please select a number from %d to %d: ' % (minEntryIndex, maxEntryIndex))
+
+    while not int(select_number) <= maxEntryIndex:
+        select_number = input('Please select a number from %d to %d: ' % (minEntryIndex, maxEntryIndex))
+
+    selectedSeason = allSeasons[int(select_number) - 1]
+    seasonLink = str(tunefind_search_uri + selectedSeason.find('a')['href'])
+    getSeasonPage(seasonLink)
 
 def getTrack(content):
     selected_track = None
