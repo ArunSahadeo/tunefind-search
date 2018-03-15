@@ -73,7 +73,8 @@ def getEpisodeSong(episode):
         select_number = input('Please select a number from %d to %d for the desired song: ' % (minEntryIndex, maxEntryIndex))
 
     selectedTrack = allSongs[int(select_number) - 1]
-    extractMediaLink(selectedTrack)
+    playbackLink = extractMediaLink(selectedTrack)
+    openLink(playbackLink)
 
 def extractMediaLink(song):
     chosenLink = None
@@ -148,7 +149,7 @@ def getTrack(content):
     selected_track = None
     request_content_page = requests.get(tunefind_search_uri + content['uri'], headers)
     soup = BeautifulSoup(request_content_page.text, 'html.parser')
-    all_tracks = soup.find_all(class_='AppearanceRow__container___XH3q9')
+    all_tracks = soup.find_all(class_='AppearanceRow__container___XH3q9') if content['type'] == 'artist' else soup.find_all(class_='SongRow__container___3eT_L')
 
     minEntryIndex = int(min(range(len(all_tracks))) + 1)
     maxEntryIndex = int(max(range(len(all_tracks))) + 1)
@@ -159,7 +160,7 @@ def getTrack(content):
         return
 
     for index, track_single in enumerate(all_tracks):
-        song_title = track_single.find(class_='AppearanceRow__songInfoTitle___3nWel')
+        song_title = track_single.find(class_='AppearanceRow__songInfoTitle___3nWel') if content['type'] == 'artist' else track_single.find(class_='SongTitle__link___2OQHD')
         print('Title: %s' % (song_title.text))
         print('Index: %d' % (int(index) + 1))
 
