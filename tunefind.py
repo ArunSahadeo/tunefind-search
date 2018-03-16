@@ -205,6 +205,9 @@ search_param = input('Please enter the name of the TV show, movie or artist: ')
 while not search_param:
     search_param = input('Please enter the name of the TV show, movie or artist: ')
 
+while not search_param.strip():
+    search_param = input('Please enter the name of the TV show, movie or artist: ')
+
 search_param = urllib.parse.quote(search_param).lower()
 
 search_results = requests.get('%s/search/site?q=%s' % (tunefind_search_uri, search_param), headers)
