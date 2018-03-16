@@ -47,6 +47,9 @@ def getEpisodeSong(episode):
     get_episode_page = requests.get(str(tunefind_search_uri + episode), headers)
     soup = BeautifulSoup(get_episode_page.text, 'html.parser')
     allSongs = soup.find_all(class_='SongRow__container___3eT_L')
+    if not len(allSongs):
+        print("There were no songs featured in this episode")
+        return
     minEntryIndex = int(min(range(len(allSongs))) + 1)
     maxEntryIndex = int(max(range(len(allSongs))) + 1)
 
@@ -164,6 +167,10 @@ def getTrack(content):
     request_content_page = requests.get(tunefind_search_uri + content['uri'], headers)
     soup = BeautifulSoup(request_content_page.text, 'html.parser')
     all_tracks = soup.find_all(class_='AppearanceRow__container___XH3q9') if content['type'] == 'artist' else soup.find_all(class_='SongRow__container___3eT_L')
+
+    if not len(all_tracks):
+        print("We couldn't find any songs for this %s" % (content['type']))
+        return
 
     minEntryIndex = int(min(range(len(all_tracks))) + 1)
     maxEntryIndex = int(max(range(len(all_tracks))) + 1)
