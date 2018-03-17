@@ -54,7 +54,8 @@ def getEpisodeSong(episode):
     maxEntryIndex = int(max(range(len(allSongs))) + 1)
 
     if minEntryIndex == maxEntryIndex:
-        extractMediaLink(allSongs[0])
+        playbackLink = extractMediaLink(allSongs[0])
+        openLink(playbackLink)
         return
 
     for index, song in enumerate(allSongs):
