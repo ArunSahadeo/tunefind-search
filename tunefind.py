@@ -18,6 +18,7 @@ def openLink(externalURI):
 
 def getSeasonPage(seasonLink):
     selected_episode = None
+    sleep(0.5)
     request_season_page = requests.get(seasonLink, headers=headers)
     soup = BeautifulSoup(request_season_page.text, 'html.parser')
     seasonEpisodes = soup.find_all(class_='EpisodeListItem__title___32XUR')
@@ -44,6 +45,7 @@ def getSeasonPage(seasonLink):
 
 def getEpisodeSong(episode):
     selectedTrack = None
+    sleep(0.5)
     get_episode_page = requests.get(str(tunefind_search_uri + episode), headers)
     soup = BeautifulSoup(get_episode_page.text, 'html.parser')
     allSongs = soup.find_all(class_='SongRow__container___3eT_L')
@@ -131,6 +133,7 @@ def getSelectedEntry(entries):
 
 def getSeason(content):
     selectedSeason = None
+    sleep(0.5)
     request_content_page = requests.get(tunefind_search_uri + content['uri'], headers)
     soup = BeautifulSoup(request_content_page.text, 'html.parser')
     allSeasons = soup.find_all(class_='MainList__item___2MKl8')
@@ -165,6 +168,7 @@ def getSeason(content):
 
 def getTrack(content):
     selected_track = None
+    sleep(0.5)
     request_content_page = requests.get(tunefind_search_uri + content['uri'], headers)
     soup = BeautifulSoup(request_content_page.text, 'html.parser')
     all_tracks = soup.find_all(class_='AppearanceRow__container___XH3q9') if content['type'] == 'artist' else soup.find_all(class_='SongRow__container___3eT_L')
