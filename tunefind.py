@@ -21,7 +21,7 @@ def getSeasonPage(seasonLink):
     sleep(0.5)
     request_season_page = requests.get(seasonLink, headers=headers)
     soup = BeautifulSoup(request_season_page.text, 'html.parser')
-    seasonEpisodes = soup.find_all(class_='EpisodeListItem__title___32XUR')
+    seasonEpisodes = soup.select('[class*="EpisodeListItem__title"]')
     minEntryIndex = int(min(range(len(seasonEpisodes))) + 1)
     maxEntryIndex = int(max(range(len(seasonEpisodes))) + 1)
     for index, seasonEpisode in enumerate(seasonEpisodes):
@@ -136,7 +136,7 @@ def getSeason(content):
     sleep(0.5)
     request_content_page = requests.get(tunefind_search_uri + content['uri'], headers)
     soup = BeautifulSoup(request_content_page.text, 'html.parser')
-    allSeasons = soup.find_all(class_='MainList__item___2MKl8')
+    allSeasons = soup.select('[class*="MainList__item"]')
 
     minEntryIndex = int(min(range(len(allSeasons))) + 1)
     maxEntryIndex = int(max(range(len(allSeasons))) + 1)
@@ -148,6 +148,10 @@ def getSeason(content):
 
     for index, season in enumerate(allSeasons):
         season_link = season.find('a')
+
+        if season_link is None:
+            continue
+
         print('Title: %s' % (season_link.text))
         print('Index: %d' % (int(index) + 1))
 
