@@ -223,9 +223,18 @@ if 'no results found' in search_results.text.lower():
 
 soup = BeautifulSoup(search_results.text, 'html.parser')
 
-results_table = soup.find(class_='tf-search-results')
+results_table = soup.select('.pageSearchWrapper + .container')[0]
 
-results_columns = results_table.find_all(class_='col-md-4')
+if results_table is None:
+    print('Cannot find any search results for some reason.')
+    sys.exit(1)
+
+#results_columns = results_table.find_all(class_='col-md-')
+results_columns = results_table.select('[class*="col-md-"]')
+
+if not results_columns:
+    print('Cannot find any search results for some reason.')
+    sys.exit(1)
 
 for results_column in results_columns:
     if not results_column.find('a'): continue
